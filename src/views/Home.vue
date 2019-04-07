@@ -15,6 +15,14 @@
       <div v-if="currentContact === contact">
         {{ contact.phone_number }}
         {{ contact.bio }}
+        <p>firstName: <input type="text" v-model="contact.first_name"></p>
+        <p>lastName: <input type="text" v-model="contact.last_name"></p>
+        <p>email: <input type="text" v-model="contact.email"></p>
+        <p>phoneNumber: <input type="text" v-model="contact.phone_number"></p>
+        <p>middleName: <input type="text" v-model="contact.middle_name"></p>
+        <p>bio: <input type="text" v-model="contact.bio"></p>
+        <button v-on:click="updateContact(contact)">Update contact</button>
+        <button v-on:click="destroyContact(contact)">Destroy contact</button>
       </div>
       <hr>
     </div>
@@ -60,6 +68,21 @@ export default {
         // add the data to the array
         this.contacts.push(response.data)
       });
+    },
+    updateContact: function(contact) {
+      axios.patch("/api/contacts/" + contact.id, contact).then(response => {
+        console.log(response);
+        // find contact in array
+        var index = this.contacts.indexOf(contact);
+        // replace contact in array
+        this.contacts.splice(index, 1, response.data);
+      })
+    },
+    destroyContact: function(contact) {
+      axios.delete("/api/contacts/" + contact.id).then(response => {
+        var index = this.contacts.indexOf(contact);
+        this.contacts.splice(index, 1);
+      })
     }
   }
 };
