@@ -11,6 +11,11 @@
     <div v-for="contact in contacts">
       {{ contact.full_name }}
       {{ contact.email }}
+      <button v-on:click="currentContact = contact">Show more info</button>
+      <div v-if="currentContact === contact">
+        {{ contact.phone_number }}
+        {{ contact.bio }}
+      </div>
       <hr>
     </div>
   </div>
@@ -34,7 +39,8 @@ export default {
         phone_number: "",
         middle_name: "",
         bio: ""
-      }
+      },
+      currentContact: {}
     };
   },
   created: function() {
